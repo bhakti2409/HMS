@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# Pulse - Hospital Management System (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React (JavaScript) + **Vite** frontend with three roles: **Admin**, **Doctor** and **Patient**.
+No backend yet - data is dummy data kept in React Context and saved in `localStorage`.
 
-## Available Scripts
+## Run
 
-In the project directory, you can run:
+```
+npm install
+npm run dev      # (npm start also works)
+```
 
-### `npm start`
+The app opens at http://localhost:3000. Build for production with `npm run build` (output in `dist/`).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Demo logins
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| Role    | Email             | Password   |
+|---------|-------------------|------------|
+| Admin   | admin@gmail.com   | Admin@123  |
+| Doctor  | doctor@gmail.com  | Doctor@123 |
+| Patient | rahul@gmail.com   | Rahul@123  |
 
-### `npm test`
+New users can register from the Register page (stored in localStorage).
+To reset all data: open DevTools -> Application -> Local Storage -> Clear.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Concepts used
 
-### `npm run build`
+Components, Props, useState, useEffect, useNavigate, useParams, Context API + useReducer,
+React Router (nested routes, `Outlet`, layouts), `ProtectedRoute` (role based),
+localStorage, React Hook Form (validation), conditional rendering, `map()`, `filter()`, `find()`, `reduce()`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Folder structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+index.html                     Vite entry page (loads src/main.jsx)
+vite.config.js                 Vite settings (React plugin, port 3000)
+src/
+  main.jsx                     React entry point
+  App.jsx                      Theme + providers + routes
+  context/HospitalContext.jsx   Context + useReducer (doctors, patients, appointments, medicines, cart, orders)
+  data/                        users.js (login accounts) + initialData.js (dummy data)
+  utils/                       auth.js (localStorage login helpers), helpers.js
+  Routes/                      AppRoutes.jsx, ProtectedRoute.jsx
+  Layout/                      AdminLayout, DoctorLayout, PatientLayout, DashboardLayout
+  Components/                  Header, Sidebar, Common (PageHeader, StatCard, StatusBadge, AppointmentTable...)
+  Pages/                       LoginPage, RegisterPage, Unauthorized, NotFound
+    Admin/                     Dashboard, ManageDoctors, ManagePatients, ManageAppointments, ManagePharmacy
+    Doctor/                    Dashboard, DoctorAppointments, DoctorPatients
+    Patient/                   Dashboard, BrowseDoctors, DoctorDetails, MyAppointments, PharmacyPage, CartPage
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Flow
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+Login -> find user in users array -> save in localStorage -> check role
+  ADMIN   -> /admin/dashboard   (AdminLayout)
+  DOCTOR  -> /doctor/dashboard  (DoctorLayout)
+  PATIENT -> /patient/dashboard (PatientLayout)
+```
